@@ -1,11 +1,409 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will You Forgive Me Tanvi? 💔</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tanvi, will you forgive me? 🥺</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+–bg: #0d0d0d;
+–white: #f5f0eb;
+–accent: #e07b6a;
+–accent2: #c45a47;
+–muted: rgba(245,240,235,0.5);
+–card-bg: rgba(255,255,255,0.03);
+–border: rgba(224,123,106,0.2);
+}
+
+body {
+background: var(–bg);
+color: var(–white);
+font-family: ‘Lato’, sans-serif;
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+position: relative;
+}
+
+/* Ambient glow */
+.glow {
+position: fixed;
+border-radius: 50%;
+filter: blur(120px);
+pointer-events: none;
+z-index: 0;
+}
+.glow-1 {
+width: 500px; height: 500px;
+background: rgba(224,123,106,0.08);
+top: -100px; left: -100px;
+animation: drift1 10s ease-in-out infinite;
+}
+.glow-2 {
+width: 400px; height: 400px;
+background: rgba(180,80,60,0.06);
+bottom: -80px; right: -80px;
+animation: drift2 12s ease-in-out infinite;
+}
+@keyframes drift1 {
+0%,100% { transform: translate(0,0); }
+50% { transform: translate(60px, 40px); }
+}
+@keyframes drift2 {
+0%,100% { transform: translate(0,0); }
+50% { transform: translate(-40px, -60px); }
+}
+
+/* Falling tears */
+.tears { position: fixed; inset: 0; pointer-events: none; z-index: 1; }
+.tear {
+position: absolute;
+width: 3px;
+border-radius: 0 0 50% 50%;
+background: linear-gradient(to bottom, rgba(150,200,255,0.6), rgba(100,160,255,0.1));
+animation: tearFall var(–td, 4s) linear infinite var(–tdelay, 0s);
+top: -20px;
+}
+@keyframes tearFall {
+0%   { transform: translateY(-10px) scaleX(1); opacity: 0; }
+10%  { opacity: 0.7; }
+90%  { opacity: 0.3; }
+100% { transform: translateY(105vh) scaleX(0.5); opacity: 0; }
+}
+
+/* Card */
+.card {
+position: relative;
+z-index: 10;
+max-width: 520px;
+width: 92%;
+padding: 3.5rem 3.5rem 3rem;
+background: var(–card-bg);
+border: 1px solid var(–border);
+border-radius: 3px;
+text-align: center;
+box-shadow:
+0 0 60px rgba(224,123,106,0.08),
+0 30px 80px rgba(0,0,0,0.5),
+inset 0 1px 0 rgba(255,255,255,0.05);
+animation: cardIn 1.2s cubic-bezier(0.16,1,0.3,1) forwards;
+opacity: 0;
+}
+@keyframes cardIn {
+from { opacity: 0; transform: translateY(50px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Top line accent */
+.card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 10%; right: 10%;
+height: 2px;
+background: linear-gradient(90deg, transparent, var(–accent), transparent);
+border-radius: 2px;
+}
+
+.emoji-wrap {
+font-size: 3.5rem;
+margin-bottom: 1.4rem;
+display: block;
+animation: sob 2s ease-in-out infinite;
+filter: drop-shadow(0 0 10px rgba(224,123,106,0.4));
+}
+@keyframes sob {
+0%,100% { transform: rotate(-8deg) scale(1); }
+25%     { transform: rotate(8deg) scale(1.05); }
+50%     { transform: rotate(-5deg) scale(0.97); }
+75%     { transform: rotate(6deg) scale(1.03); }
+}
+
+.tag {
+font-family: ‘Lato’, sans-serif;
+font-weight: 300;
+font-size: 0.75rem;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 1rem;
+opacity: 0;
+animation: fadeUp 0.7s 0.5s forwards;
+}
+
+h1 {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(1.9rem, 5.5vw, 2.6rem);
+font-weight: 400;
+line-height: 1.3;
+color: var(–white);
+margin-bottom: 0.4rem;
+opacity: 0;
+animation: fadeUp 0.7s 0.7s forwards;
+}
+h1 em {
+font-style: italic;
+color: var(–accent);
+}
+
+.name {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(2.4rem, 7vw, 3.4rem);
+font-style: italic;
+color: var(–white);
+letter-spacing: 0.04em;
+margin-bottom: 2rem;
+opacity: 0;
+animation: fadeUp 0.7s 0.9s forwards;
+}
+
+.line {
+width: 60px; height: 1px;
+background: linear-gradient(90deg, transparent, var(–accent), transparent);
+margin: 0 auto 2rem;
+opacity: 0;
+animation: fadeUp 0.7s 1s forwards;
+}
+
+.message {
+font-family: ‘Playfair Display’, serif;
+font-style: italic;
+font-size: 1.05rem;
+line-height: 2;
+color: var(–muted);
+margin-bottom: 2.5rem;
+opacity: 0;
+animation: fadeUp 0.7s 1.2s forwards;
+}
+.message strong {
+color: var(–white);
+font-style: normal;
+font-weight: 400;
+}
+
+/* Buttons */
+.buttons {
+display: flex;
+flex-direction: column;
+gap: 1rem;
+opacity: 0;
+animation: fadeUp 0.7s 1.5s forwards;
+}
+
+.btn-forgive {
+font-family: ‘Lato’, sans-serif;
+font-weight: 400;
+font-size: 0.9rem;
+letter-spacing: 0.22em;
+text-transform: uppercase;
+padding: 1rem 2rem;
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+color: #fff;
+border: none;
+border-radius: 2px;
+cursor: pointer;
+transition: all 0.3s;
+box-shadow: 0 4px 20px rgba(224,123,106,0.3);
+position: relative;
+overflow: hidden;
+}
+.btn-forgive::after {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: rgba(255,255,255,0.1);
+opacity: 0;
+transition: opacity 0.3s;
+}
+.btn-forgive:hover::after { opacity: 1; }
+.btn-forgive:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(224,123,106,0.45); }
+
+.btn-notyet {
+font-family: ‘Lato’, sans-serif;
+font-size: 0.8rem;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+padding: 0.75rem 2rem;
+background: transparent;
+color: rgba(245,240,235,0.35);
+border: 1px solid rgba(245,240,235,0.1);
+border-radius: 2px;
+cursor: pointer;
+transition: all 0.3s;
+}
+.btn-notyet:hover { color: rgba(245,240,235,0.6); border-color: rgba(245,240,235,0.25); }
+
+/* Forgiven overlay */
+.forgiven-overlay {
+position: fixed; inset: 0; z-index: 100;
+display: flex; flex-direction: column;
+align-items: center; justify-content: center;
+gap: 1.2rem;
+background: radial-gradient(ellipse at center, rgba(224,123,106,0.12), #0d0d0d 70%);
+opacity: 0; pointer-events: none;
+transition: opacity 0.8s ease;
+text-align: center; padding: 2rem;
+}
+.forgiven-overlay.active { opacity: 1; pointer-events: all; }
+
+.forgiven-emoji { font-size: 4.5rem; animation: popIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.forgiven-title {
+font-family: ‘Playfair Display’, serif;
+font-size: clamp(2rem,7vw,3.2rem);
+font-style: italic;
+color: var(–accent);
+animation: popIn 0.6s 0.15s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+.forgiven-sub {
+font-family: ‘Lato’, sans-serif;
+font-weight: 300;
+font-size: 1rem;
+letter-spacing: 0.1em;
+color: var(–muted);
+animation: popIn 0.6s 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+/* Confetti hearts */
+.confetti {
+position: fixed; pointer-events: none; z-index: 99;
+font-size: 1.4rem;
+animation: cfall var(–cd, 2.5s) ease-in forwards;
+}
+@keyframes cfall {
+0%   { transform: translateY(-10px) rotate(0deg); opacity:1; }
+100% { transform: translateY(105vh) rotate(var(–cr, 360deg)); opacity:0; }
+}
+
+@keyframes fadeUp {
+from { opacity:0; transform:translateY(18px); }
+to   { opacity:1; transform:translateY(0); }
+}
+@keyframes popIn {
+from { transform:scale(0.4); opacity:0; }
+to   { transform:scale(1); opacity:1; }
+}
+</style>
+
 </head>
 <body>
-    <h1>Welcome to My Proposal</h1>
+
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+<div class="tears" id="tears"></div>
+
+<div class="card">
+  <span class="emoji-wrap">🥺</span>
+  <p class="tag">From the bottom of my heart</p>
+  <h1>Will you <em>forgive</em> me,</h1>
+  <div class="name">Tanvi?</div>
+  <div class="line"></div>
+  <p class="message">
+    I know I hurt you, and I am <strong>truly sorry.</strong><br>
+    You mean everything to me, and losing your smile<br>
+    is the worst feeling in the world.<br><br>
+    I promise to do better — <strong>always.</strong><br>
+    Please give me a chance to make it right. 🙏
+  </p>
+  <div class="buttons">
+    <button class="btn-forgive" onclick="sayForgiven()">💛 Yes, I forgive you</button>
+    <button class="btn-notyet" onclick="notYet(this)">Not yet…</button>
+  </div>
+</div>
+
+<!-- Forgiven overlay -->
+
+<div class="forgiven-overlay" id="forgivenOverlay">
+  <div class="forgiven-emoji">🤗</div>
+  <div class="forgiven-title">Thank you, Tanvi!</div>
+  <div class="forgiven-sub">You are my everything. I won't let you down. ❤️</div>
+</div>
+
+<script>
+  // Falling tears
+  const tearsEl = document.getElementById('tears');
+  for (let i = 0; i < 14; i++) {
+    const t = document.createElement('div');
+    t.className = 'tear';
+    const h = Math.random() * 18 + 8;
+    t.style.cssText = `
+      left:${Math.random()*100}%;
+      height:${h}px;
+      --td:${(Math.random()*4+3).toFixed(1)}s;
+      --tdelay:-${(Math.random()*5).toFixed(1)}s;
+    `;
+    tearsEl.appendChild(t);
+  }
+
+  async function sendNotification(answer) {
+    try {
+      const formData = new FormData();
+      formData.append('_replyto', 'Shivaayb99@gmail.com');
+      formData.append('_subject', answer === 'FORGIVEN' ? '💛 Tanvi forgave you!' : '😢 Tanvi said Not Yet...');
+      formData.append('Answer', answer);
+      formData.append('Message', answer === 'FORGIVEN'
+        ? '💛 Tanvi clicked "Yes, I forgive you"! 🎉'
+        : '😢 Tanvi clicked "Not yet..."');
+      formData.append('Time', new Date().toLocaleString());
+      await fetch('https://formspree.io/f/mjglvrvg', {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+    } catch(e) { console.log('Notification failed', e); }
+  }
+
+  function sayForgiven() {
+    document.getElementById('forgivenOverlay').classList.add('active');
+    launchConfetti();
+    launchConfetti(400);
+    launchConfetti(800);
+    sendNotification('FORGIVEN');
+  }
+
+  function launchConfetti(delay = 0) {
+    setTimeout(() => {
+      const items = ['💛','🤗','✨','🌸','💕','🙏','🌼','💖'];
+      for (let i = 0; i < 18; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti';
+        c.textContent = items[Math.floor(Math.random()*items.length)];
+        c.style.cssText = `
+          left:${Math.random()*100}%;
+          top:-5%;
+          animation-delay:${(Math.random()*0.8).toFixed(2)}s;
+          --cd:${(Math.random()*1.5+2).toFixed(1)}s;
+          --cr:${Math.random()>0.5?'':'-'}${Math.floor(Math.random()*480)}deg;
+        `;
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+      }
+    }, delay);
+  }
+
+  function notYet(btn) {
+    sendNotification('NOT YET');
+    const steps = [
+      'Please? 🥺',
+      'I am really sorry… 😔',
+      'I beg you, Tanvi 🙏',
+      'Pretty please? 💛'
+    ];
+    let step = 0;
+    btn.onclick = function() {
+      if (step < steps.length - 1) {
+        btn.textContent = steps[step++];
+      } else {
+        sayForgiven();
+      }
+    };
+    btn.textContent = steps[step++];
+  }
+</script>
+
 </body>
 </html>
